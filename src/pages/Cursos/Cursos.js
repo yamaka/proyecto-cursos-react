@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./Cursos.css";
-import FormularioCurso from '../FormularioCurso/FormularioCurso'
+import FormularioCurso from '../../components/FormularioCurso/FormularioCurso'
 
 const Cursos = () => {
   const [cursos, setCursos] = useState([]);
@@ -58,7 +58,18 @@ const Cursos = () => {
     })
   }
 
+  const eliminarCurso = async (idCurso)=>{
+    const response = await axios.delete(`http://localhost:8080/api/cursos/${idCurso}`);
+    console.log(response);
+    if(response.status == 200){
+      const nuevosCursos = cursos.filter(curso => curso.id != idCurso);
+      setCursos(nuevosCursos)
+    }
+  }
+
   return (
+    <div>
+      
     <div className="container mx-auto py-6 px-4">
         {mostrarFormulario && <FormularioCurso closeModal={closeModal} agregarCurso={agregarCurso} editarCurso={editarCurso} curso={curso} tipo={tipoForm}/>}
       <h1 className="text-3xl py-4 border-b mb-10">Administracion de Cursos</h1>
@@ -118,17 +129,25 @@ const Cursos = () => {
                 </td>
 
                 <td className="border-dashed border-t border-gray-200 emailAddress">
+                  <div>
                   <span className=" text-sky-500 px-6 py-3 flex items-center"
                     onClick={() => mostarFormularioCurso("edicion", curso.id)}
                   >
                     editar
                   </span>
+                  <span className=" text-sky-500 px-6 py-3 flex items-center"
+                    onClick={() => eliminarCurso(curso.id)}
+                  >
+                    eliminar
+                  </span>
+                  </div>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
+    </div>
     </div>
   );
 };
