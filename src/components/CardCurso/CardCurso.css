@@ -1,3 +1,9 @@
 .container-curso{
     width: 20rem;
 }
+.figure-curso{
+    height: 25rem;
+}
+.image-curso{
+    max-height: 10rem;
+}

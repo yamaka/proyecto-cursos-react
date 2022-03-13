@@ -10,12 +10,19 @@ import { BrowserRouter as Router, Routes , Route } from "react-router-dom";
 import "./App.css";
 
 function App() {
+  const [nroCarrito, setNroCarrito] = useState(0)
+
+  const addNroCarrito = () =>{
+    console.log("addNroCarrito");
+    setNroCarrito(nroCarrito + 1);
+  }
+
   return (
     <div>
     <Router>
-      <Header/>
+      <Header nroCarrito={nroCarrito}/>
       <Routes>
-        <Route path="/" element={  <Home />}/>
+        <Route path="/" element={  <Home setNroCarrito={addNroCarrito}/>}/>
         <Route path="/cursos" element={<Cursos />}/>
         <Route path="/contacto" element={<Contacto />} />
         
