@@ -5,20 +5,24 @@ export default ({children})=>{
     })
 
     const agregarCarrito = (curso) =>{
-        const {cursos} = carritoStateContext
-        const nuevosCursos = cursos.push(curso); 
-        setCarritoStateContext({...carritoStateContext, ...{cursos:nuevosCursos}})
+        let {cursos} = carritoStateContext;
+        const cursoEncontrado = cursos.find(cursoContext => cursoContext.id == curso.id)
+        if(!cursoEncontrado){
+            cursos.push(curso); 
+            setCarritoStateContext({...carritoStateContext, ...{cursos}})
+        }
+        
     }
     
     return (
-        <carritoStateContext.Provider
+        <CarritoContext.Provider
             value={[
                 carritoStateContext,
                 agregarCarrito
             ]}
         >
             {children}
-        </carritoStateContext.Provider>   
+        </CarritoContext.Provider>   
         
     )
 }

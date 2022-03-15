@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, {useEffect, useState} from "react";
 import CardCurso from "../../components/CardCurso/CardCurso";
-const Home = ({setNroCarrito}) => {
+const Home = () => {
   const [cursos, setCursos] = useState([]);
   useEffect(() => {
     getCursos()
@@ -21,7 +21,7 @@ const Home = ({setNroCarrito}) => {
         <br /><br />
         <div className=" flex flex-1 flex-row flex-wrap">
           {/* tarea llamar al servicio de listado de cursos y hacer map para mostrar todos los curso de la base de datos */}
-          {cursos.map(curso => <CardCurso curso={curso} setNroCarrito={setNroCarrito}/>)}
+          {cursos.map(curso => <CardCurso key={curso.id} curso={curso}/>)}
         </div>
       </div>
     
