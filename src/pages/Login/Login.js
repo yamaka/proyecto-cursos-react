@@ -1,7 +1,32 @@
-import React from 'react'
-import {Link} from 'react-router-dom'
+import axios from 'axios';
+import React, {useState, useContext} from 'react'
+import {Link, useNavigate} from 'react-router-dom'
+import { UsuarioContext } from '../../context/UsuarioContext';
 
 const Login = () => {
+  const navigate = useNavigate();
+  const [usuario, setUsuario] = useState({
+    username:"",
+    password: ""
+  });
+
+  const [usuarioStateContext, setUsuarioStateContext] = useContext(UsuarioContext);
+
+  const ingresar = async () =>{
+    const data = {...usuario};
+    const response  =  await axios.post("http://localhost:8080/api/auth/signin", data)
+    if(response.status == 200){
+      const {username} = response.data;
+      setUsuarioStateContext({...usuarioStateContext, ...{estaLogueado: true, nombreUsuario: username}})
+      setTimeout(() => navigate("/"), 500);
+      
+    }
+  }
+
+  const cambiarTexto = (valor, tipo) =>{
+    setUsuario({...usuario, ...{[tipo]:valor }})
+}
+
   return (
     <div className="bg-grey-lighter min-h-screen flex flex-col">
       <div className="container max-w-sm mx-auto flex flex-col flex-1 items-center justify-center px-2">
@@ -11,13 +36,15 @@ const Login = () => {
             className="block border border-grey-light w-full p-3 rounded mb-4"
             type="text"
             placeholder="Usuario"
-           /*  onChange={(e) => handleChangeForm(e.target.value, "username")} */
+            value={usuario.username}
+            onChange={(e) => cambiarTexto(e.target.value, "username")}
           />
           <input
             className="block border border-grey-light w-full p-3 rounded mb-4"
             type="password"
+            value={usuario.password}
             placeholder="Contraseña"
-          /*   onChange={(e) => handleChangeForm(e.target.value, "password")} */
+            onChange={(e) => cambiarTexto(e.target.value, "password")}
           />
           <br />
           <span>Si no tienes una cuenta  <Link to="/signup"><span className="text-blue-300">registrate</span></Link></span>
@@ -26,7 +53,7 @@ const Login = () => {
           <button
            /*  disabled={validateInfo()} */
             className="bg-green-500 w-full text-center py-3 rounded text-white hover:bg-green-dark focus-outline-none my-1 "
-           /*  onClick={() => handleSignin()} */
+            onClick={() => ingresar()}
           >
             Ingresar
           </button>

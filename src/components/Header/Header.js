@@ -1,19 +1,26 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 
-//context 
+//context
 import { CarritoContext } from "../../context/CarritoContext";
+import { UsuarioContext } from "../../context/UsuarioContext";
 
 const Header = () => {
-  
-  const [carritoStateContext, setCarritoStateContext ] = useContext(CarritoContext);
-  const {cursos} = carritoStateContext;
+  const [carritoStateContext, setCarritoStateContext] =
+    useContext(CarritoContext);
+  const [usuarioStateContext, setUsuarioStateContext] =
+    useContext(UsuarioContext);
+
+    const {estaLogueado, nombreUsuario} = usuarioStateContext;
+  const { cursos } = carritoStateContext;
   const nroCarrito = cursos.length;
   return (
     <nav className="flex items-center justify-between flex-wrap bg-gray-800 p-6">
       <div className="flex items-center flex-no-shrink text-white mr-6">
         <Link to="/">
-          <span className="font-semibold text-xl tracking-tight">Cursos Pro</span>
+          <span className="font-semibold text-xl tracking-tight">
+            Cursos Pro
+          </span>
         </Link>
       </div>
       <div className="block lg:hidden">
@@ -54,19 +61,24 @@ const Header = () => {
               </span>
             </a>
           </li>
+          {!estaLogueado && (
+            <>
+              <Link
+                to="/iniciar-sesion"
+                className="inline-block text-sm px-4 py-2 leading-none  text-white   mt-4 lg:mt-0"
+              >
+                Ingresar
+              </Link>
+              <Link
+                to="/registro-usuario"
+                className="inline-block text-sm px-4 py-2 leading-none  text-white   mt-4 lg:mt-0"
+              >
+                Registrate
+              </Link>
+            </>
+          )}
 
-          <address
-            to="/signin"
-            className="inline-block text-sm px-4 py-2 leading-none  text-white   mt-4 lg:mt-0"
-          >
-            Ingresar
-          </address>
-          <address
-            to="/signup"
-            className="inline-block text-sm px-4 py-2 leading-none  text-white   mt-4 lg:mt-0"
-          >
-            Registrate
-          </address>
+          {estaLogueado && <span className=" text-white mx-2 font-bold text-lg">{nombreUsuario}</span>}
 
           {/*  <React.Fragment>
             

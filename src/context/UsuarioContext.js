@@ -1,7 +1,8 @@
 import { createContext, useState, useEffect, useContext } from "react";
 export default ({children})=>{
     const [usuarioStateContext, setUsuarioStateContext] = useState({
-        estaLogueado:false
+        estaLogueado:false,
+        nombreUsuario:''
     })
 
     return (
