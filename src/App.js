@@ -8,11 +8,13 @@ import UsuarioContext from "./context/UsuarioContext";
 function App() {
 
   return (
-    <UsuarioContext>
     <CarritoContext>
+    <UsuarioContext>
+    
       <Router />
-    </CarritoContext>
     </UsuarioContext>
+    </CarritoContext>
+   
   );
 }
 

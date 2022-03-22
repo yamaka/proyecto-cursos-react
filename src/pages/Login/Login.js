@@ -1,7 +1,8 @@
 import axios from 'axios';
-import React, {useState, useContext} from 'react'
+import React, {useState, useContext, useEffect} from 'react'
 import {Link, useNavigate} from 'react-router-dom'
 import { UsuarioContext } from '../../context/UsuarioContext';
+import { CarritoContext } from '../../context/CarritoContext';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -11,14 +12,34 @@ const Login = () => {
   });
 
   const [usuarioStateContext, setUsuarioStateContext] = useContext(UsuarioContext);
+  const [carritoStateContext,
+    setCarritoStateContext,
+    agregarCarrito,
+    borrarCarrito,
+    estaEnCarrito,
+    obtenerCursosCarrito] = useContext(CarritoContext);
+
+  useEffect(() => {
+    if(carritoStateContext.idCarrito != null){
+      obtenerCursosCarrito();
+    }
+  
+   
+  }, [carritoStateContext.idCarrito])
+  
 
   const ingresar = async () =>{
     const data = {...usuario};
     const response  =  await axios.post("http://localhost:8080/api/auth/signin", data)
     if(response.status == 200){
-      const {username} = response.data;
-      setUsuarioStateContext({...usuarioStateContext, ...{estaLogueado: true, nombreUsuario: username}})
-      setTimeout(() => navigate("/"), 500);
+      const data = response.data;
+      let  usuarioLogueado = {...usuarioStateContext, ...{estaLogueado: true}, ...data}
+      setUsuarioStateContext(usuarioLogueado)
+      setCarritoStateContext({...carritoStateContext, ...{idCarrito: data.carrito.id}})
+      usuarioLogueado = JSON.stringify(usuarioLogueado);
+      localStorage.setItem("USUARIO_INFO", usuarioLogueado);      
+      setTimeout(() => {
+        navigate("/")}, 500);
       
     }
   }
